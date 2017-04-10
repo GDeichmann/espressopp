@@ -1093,8 +1093,12 @@ def setLennardJonesInteractions(system, defaults, atomtypeparams, verletlist, cu
             pi=atomtypeparams[i]
             pj=atomtypeparams[j]
             if pi!=pj:
-                sig=0.5*(float(pi['sig'])+float(pj['sig']))
-                eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
+                if int(defaults['combinationrule'])==2:
+                    sig=0.5*(float(pi['sig'])+float(pj['sig']))
+                    eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
+                else:
+                    sig=math.sqrt(float(pi['sig'])*float(pj['sig']))
+                    eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
             else:
                 sig=float(pi['sig'])
                 eps=float(pi['eps'])
@@ -1142,8 +1146,12 @@ def setLennardJonesInteractionsTI(system, defaults, atomtypeparams, verletlist, 
             pi=atomtypeparams[i]
             pj=atomtypeparams[j]
             if pi!=pj:
-                sig=0.5*(float(pi['sig'])+float(pj['sig']))
-                eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
+                if int(defaults['combinationrule'])==2:
+                    sig=0.5*(float(pi['sig'])+float(pj['sig']))
+                    eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
+                else:
+                    sig=math.sqrt(float(pi['sig'])*float(pj['sig']))
+                    eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
             else:
                 sig=float(pi['sig'])
                 eps=float(pi['eps'])
@@ -1186,8 +1194,12 @@ def setLennardJones14Interactions(system, defaults, atomtypeparams, onefourlist,
             pi=atomtypeparams[i]
             pj=atomtypeparams[j]
             if pi!=pj:
-                sig=0.5*(float(pi['sig'])+float(pj['sig']))
-                eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
+                if int(defaults['combinationrule'])==2:
+                    sig=0.5*(float(pi['sig'])+float(pj['sig']))
+                    eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
+                else:
+                    sig=math.sqrt(float(pi['sig'])*float(pj['sig']))
+                    eps=math.sqrt(float(pi['eps'])*float(pj['eps']))
             else:
                 sig=float(pi['sig'])
                 eps=float(pi['eps'])
