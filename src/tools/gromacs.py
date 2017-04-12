@@ -493,6 +493,7 @@ def read(gro_file, top_file="", doRegularExcl=True):
 
         f.seek(0) # Now we search for bonds, angles definitions and start from the beginning of the file buffer
 
+
         for mol in molecules: ### this loop not modified for 1-4 pairs
             print "Preparing %d %s molecules... " %(mol['count'], mol['name'])
             print "-----------------------------"
@@ -651,6 +652,7 @@ def storeMolecules(f, molecules, mol=""):
 
 def storeAtoms(f, types, atomtypes, atomtypeparams, masses, charges, num_molecule_copies):
     line = ''
+    mol_atom_type = []
     types_tmp = []
     charge_tmp =[]
     mass_tmp=[]
@@ -716,7 +718,7 @@ def storeBonds(f, types, bondtypes, bondtypeparams, bonds, num_atoms_molecule,\
         if lookup:
             # based on atom names: potential has to be defined in bondtypes already
             # this is for tabulated bond potentials specified based on type
-            t1, t2 = types[pid1-1], types[pid2-1]
+            t1, t2 = types[pid1-1+molstartindex], types[pid2-1+molstartindex]
             if t1 > t2: # interactions in the other way
                 t1, t2 = t2, t1
             bdtypeid = bondtypes[t1][t2] #bondtypes[t1][t2]
@@ -792,7 +794,7 @@ def storeAngles(f, types, angletypes, angletypeparams, angles, num_atoms_molecul
         lookup=(len(tmp)<=4)
         pid1, pid2, pid3 = map(int, tmp[0:3])
         if lookup:
-            t1, t2, t3 = types[pid1-1], types[pid2-1], types[pid3-1]
+            t1, t2, t3 = types[pid1-1+molstartindex], types[pid2-1+molstartindex], types[pid3-1+molstartindex]
             try:
                 antypeid = angletypes[t1][t2][t3]
             except KeyError:
@@ -843,9 +845,12 @@ def storeDihedrals(f, types, dihedraltypes, dihedraltypeparams, dihedrals, num_a
             continue
         tmp = line.split()
         lookup=(len(tmp)<=5)
+        print line
         pid1, pid2, pid3, pid4 = map(int, tmp[0:4])
         if lookup:
-            t1, t2, t3, t4 = types[pid1-1], types[pid2-1], types[pid3-1], types[pid4-1] # get types of particles
+            t1, t2, t3, t4 = types[pid1-1+molstartindex], types[pid2-1+molstartindex]\
+                           , types[pid3-1+molstartindex], types[pid4-1+molstartindex] # get types of particles
+            print t1, t2, t3, t4
             try:
                 dihtypeid = dihedraltypes[t1][t2][t3][t4] #dihtypeid is now a tuple
             #if t1 not in dihedraltypes: # interactions in the other way
@@ -912,7 +917,8 @@ def storeImpropers(f, types, impropertypes, impropertypeparams, impropers, num_a
         pid1, pid2, pid3, pid4 = map(int, tmp[0:4])
         #in gromacs format topol.top and forcefield files for the Amber forcefield, the centre atom in an improper is listed third. Atoms listed first and second can be wild types (X)
         if lookup:
-            t1, t2, t3, t4 = types[pid1-1], types[pid2-1], types[pid3-1], types[pid4-1] # get types of particles
+            t1, t2, t3, t4 = types[pid1-1+molstartindex], types[pid2-1+molstartindex]\
+                           , types[pid3-1+molstartindex], types[pid4-1+molstartindex] # get types of particles
             try:
                 dihtypeid = impropertypes[t1][t2][t3][t4] #dihtypeid is now a tuple
 #                print t1, t2, t3, t4, 'found'
