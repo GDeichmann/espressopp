@@ -845,12 +845,10 @@ def storeDihedrals(f, types, dihedraltypes, dihedraltypeparams, dihedrals, num_a
             continue
         tmp = line.split()
         lookup=(len(tmp)<=5)
-        print line
         pid1, pid2, pid3, pid4 = map(int, tmp[0:4])
         if lookup:
             t1, t2, t3, t4 = types[pid1-1+molstartindex], types[pid2-1+molstartindex]\
                            , types[pid3-1+molstartindex], types[pid4-1+molstartindex] # get types of particles
-            print t1, t2, t3, t4
             try:
                 dihtypeid = dihedraltypes[t1][t2][t3][t4] #dihtypeid is now a tuple
             #if t1 not in dihedraltypes: # interactions in the other way
@@ -1415,7 +1413,7 @@ def setTabulatedInteractions(potentials, particleTypes, system, interaction):
 
 
 
-def convertTable(gro_in_file, esp_out_file, sigma=1.0, epsilon=1.0, c6=1.0, c12=1.0):
+def convertTable(gro_in_file, esp_out_file, sigma=1.0, epsilon=1.0, c6=1.0, c12=1.0, intra_scale=1.0):
     """Convert GROMACS tabulated file into ESPResSo++ tabulated file (new file
     is created). First column of input file can be either distance or angle.
     For non-bonded files, c6 and c12 can be provided. Default value for sigma, epsilon,
@@ -1429,6 +1427,7 @@ def convertTable(gro_in_file, esp_out_file, sigma=1.0, epsilon=1.0, c6=1.0, c12=
     epsilon -- optional, depending on whether you want to convert units or not.
     c6 -- optional
     c12 -- optional
+    intra_scale -- optional scaling of intramolecule interactions read from topology file
     """
 
 
@@ -1454,8 +1453,8 @@ def convertTable(gro_in_file, esp_out_file, sigma=1.0, epsilon=1.0, c6=1.0, c12=
 
             columns = line.split()
             r = float(columns[0])
-            f = float(columns[1]) # energy
-            fd= float(columns[2]) # force
+            f = float(columns[1])*intra_scale # energy
+            fd= float(columns[2])*intra_scale # force
 
             # convert units
             if angle or dihedral: # degrees to radians
