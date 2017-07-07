@@ -169,12 +169,12 @@ integrator.step = 0
 
 print "starting equilibration ..."
 # print inital status information
-espressopp.tools.info(system, integrator)
+espressopp.tools.analyse.info(system, integrator)
 for step in range(equil_nloops):
   # perform equilibration_isteps integration steps
   integrator.run(equil_isteps)
   # print status information
-  espressopp.tools.info(system, integrator)
+  espressopp.tools.analyse.info(system, integrator)
 print "equilibration finished"
 
 ########################################################################

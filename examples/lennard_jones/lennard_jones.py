@@ -192,7 +192,7 @@ system.addInteraction(interaction)
 print "starting warm-up ..."
 # print some status information (time, measured temperature, pressure,
 # pressure tensor (xy only), kinetic energy, potential energy, total energy, boxsize)
-espressopp.tools.info(system, integrator)
+espressopp.tools.analyse.info(system, integrator)
 for step in range(warmup_nloops):
   # perform warmup_isteps integraton steps
   integrator.run(warmup_isteps)
@@ -201,7 +201,7 @@ for step in range(warmup_nloops):
   # update the type0-type0 interaction to use the new values of LJpot
   interaction.setPotential(type1=0, type2=0, potential=LJpot)
   # print status info
-  espressopp.tools.info(system, integrator)  
+  espressopp.tools.analyse.info(system, integrator)  
 print "warmup finished"
 # remove the force capping interaction from the system
 system.removeInteraction(0) 
@@ -242,12 +242,12 @@ integrator.step = 0
 
 print "starting equilibration ..."
 # print inital status information
-espressopp.tools.info(system, integrator)
+espressopp.tools.analyse.info(system, integrator)
 for step in range(equil_nloops):
   # perform equilibration_isteps integration steps
   integrator.run(equil_isteps)
   # print status information
-  espressopp.tools.info(system, integrator)
+  espressopp.tools.analyse.info(system, integrator)
 print "equilibration finished"
 
 ########################################################################

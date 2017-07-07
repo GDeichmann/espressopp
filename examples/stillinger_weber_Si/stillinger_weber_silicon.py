@@ -179,7 +179,7 @@ in_time = time.time()
 espressopp.tools.analyse.info(system, integrator)
 for i in range (10):
   integrator.run(1000)
-  espressopp.tools.info(system, integrator)
+  espressopp.tools.analyse.info(system, integrator)
 
 ##############################################
 # calculate the radial distribution function #
@@ -208,7 +208,7 @@ for i in range (nprints):
       else:
         rdf_array_total[i] += rdf_array[i]
     
-  espressopp.tools.info(system, integrator)
+  espressopp.tools.analyse.info(system, integrator)
 
 fin_time = time.time()
 print '\ngeneral running time: ', (fin_time-in_time)
